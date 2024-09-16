@@ -315,6 +315,34 @@ public class TestTodos {
     }
 
     @Test
+    public void testSearchFewTasks() { // Поиск из трёх задач, совпадения в двух.
+
+        Meeting meeting = new Meeting(
+                321,
+                "Протестировать.",
+                "Ту  задачу.",
+                "Когда-нибудь, наверное."
+        );
+
+        SimpleTask simpleTask = new SimpleTask( 123, "Проверить простую задачу" );
+        String[] subtasks = { "Протестировать", "задачу", "Epic."};
+        Epic epic = new Epic( 321, subtasks );
+
+        Todos todos = new Todos();
+
+        todos.add(meeting);
+        todos.add(simpleTask);
+        todos.add(epic);
+
+        String testValue = "Протестировать";
+
+        Task[] exp = {meeting,epic};
+        Task[] act = todos.search(testValue);
+        Assertions.assertArrayEquals( exp, act );
+
+    }
+
+    @Test
     public void testSearchOneTask() { // Валидные значения, в методе search(), задача из Meeting.
 
         Meeting meeting = new Meeting(
