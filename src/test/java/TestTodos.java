@@ -272,4 +272,69 @@ public class TestTodos {
 
     }
 
+    @Test
+    public void testSearchNoTask() { // В сервисе нет задач.
+
+        Todos todos = new Todos();
+
+        String testMeetingValueTopic = "Невалидность";
+
+        Task[] exp = todos.findAll();
+        Task[] act = todos.search(testMeetingValueTopic);
+
+        Assertions.assertArrayEquals( exp, act );
+
+    }
+
+    @Test
+    public void testSearchFewDifferentTasks() { // Поиск нескольких задач.
+
+        Meeting meeting = new Meeting(
+                321,
+                "Протестировать.",
+                "Ту  задачу.",
+                "Когда-нибудь, наверное."
+        );
+
+        SimpleTask simpleTask = new SimpleTask( 123, "Протестировать простую задачу" );
+        String[] subtasks = { "Протестировать", "задачу", "Epic."};
+        Epic epic = new Epic( 321, subtasks );
+
+        Todos todos = new Todos();
+
+        todos.add(meeting);
+        todos.add(simpleTask);
+        todos.add(epic);
+
+        String testValue = "задачу";
+
+        Task[] exp = todos.findAll();
+        Task[] act = todos.search(testValue);
+        Assertions.assertArrayEquals( exp, act );
+
+    }
+
+    @Test
+    public void testSearchOneTask() { // Валидные значения, в методе search(), задача из Meeting.
+
+        Meeting meeting = new Meeting(
+                321,
+                "Обсуждение обсуждения.",
+                "Тот самый проект.",
+                "Когда-нибудь, наверное."
+        );
+        Todos todos = new Todos();
+
+        todos.add(meeting);
+
+        String testMeetingValueTopic = "Обсуждение";
+
+
+        Task[] exp = todos.findAll();
+        Task[] act = todos.search(testMeetingValueTopic);
+
+        Assertions.assertArrayEquals( exp, act );
+
+    }
+
 }
